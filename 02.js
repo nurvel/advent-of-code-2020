@@ -1,9 +1,22 @@
 const { readData } = require("./utils");
 
 readData("02")
-    .then((data) =>data.map((i) => parseRow(i)).filter((i) => checkConstraints(i)).length)
-    .then((result) => console.log(result))
-    .catch((error) => console.log(error));
+  .then(
+    (data) =>
+      data.map((i) => parseRow(i)).filter((i) => checkLetterCountConstraint(i))
+        .length
+  )
+  .then((result) => console.log("solution 1:", result))
+  .catch((error) => console.log(error));
+
+readData("02")
+  .then(
+    (data) =>
+      data.map((i) => parseRow(i)).filter((i) => checkPositionConstraint(i))
+        .length
+  )
+  .then((result) => console.log("solution 2:", result))
+  .catch((error) => console.log(error));
 
 const parseRow = (input) => {
   parts = input.split(" ");
@@ -17,7 +30,14 @@ const parseRow = (input) => {
 
 const letterCount = (word, letter) => word.split(letter).length - 1;
 
-const checkConstraints = (input) => {
+const checkLetterCountConstraint = (input) => {
   const count = letterCount(input.password, input.letter);
   return count >= input.min && count <= input.max;
+};
+
+const checkPositionConstraint = (input) => {
+  const pwArray = input.password.split('');
+  const isInFirstIndex = pwArray[input.min - 1] === input.letter;
+  const isInSecondIndex = pwArray[input.max - 1] === input.letter;
+  return isInFirstIndex != isInSecondIndex;
 };
