@@ -4,7 +4,7 @@ const fs = require("fs");
 
 const readData = async (filename) => {
   return new Promise((resolve, reject) => {
-    fs.readFile(`${filename}.txt`, "utf8", function (err, data) {
+    fs.readFile(`./data/${filename}.txt`, "utf8", function (err, data) {
       if (err) {
         reject(err);
         return;
