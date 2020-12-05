@@ -40,25 +40,14 @@ const structureData = (input) => {
 };
 
 const validPassportCountV1 = (passports) => {
-  let count = 0;
-  passports.forEach((passport) => {
-    if (validateRequiredFields(passport)) {
-      count++;
-    } else {
-    }
-  });
-  return count;
+  return passports.reduce((c, i) => (validateRequiredFields(i) ? c + 1 : c), 0);
 };
 
 const validPassportCountV2 = (passports) => {
-  let count = 0;
-  passports.forEach((passport) => {
-    if (validateAllPassPortFields(passport)) {
-      count++;
-    } else {
-    }
-  });
-  return count;
+  return passports.reduce(
+    (c, i) => (validateAllPassPortFields(i) ? c + 1 : c),
+    0
+  );
 };
 
 const validateAllPassPortFields = (passport) => {
