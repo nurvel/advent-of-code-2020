@@ -1,10 +1,16 @@
 const { readData } = require("./utils");
 
-//const solution1 = () =>
+// const solution1 = () =>
 readData("05")
   .then((data) => getSeatIds(data))
   .then((seatIds) => getHighestId(seatIds))
-  .then((result) => console.log(result)) // 959
+  .then((result) => console.log("result 1: ", result)) // 959
+  .catch((error) => console.log(error));
+
+readData("05")
+  .then((data) => getSeatIds(data))
+  .then((seatIds) => findMissingId(seatIds))
+  .then((result) => console.log("result 2:", result)) // 527
   .catch((error) => console.log(error));
 
 const ROWS = 127;
@@ -26,11 +32,20 @@ const getHalf = (data, min, max) => {
 const getSeatIds = (data) => {
   return data.map((i) => {
     const row = getHalf(i.slice(0, 7), 0, ROWS);
-    const line = getHalf(i.slice(8, data.length), 0, COLUMNS);
-    return row * 8 + line;
+    const line = getHalf(i.slice(i.length - 3, i.length), 0, COLUMNS);
+    // console.log("data: ", i, row, line, "id", Number.parseInt(row * 8 + line));
+    return Number.parseInt(row * 8 + line);
   });
 };
 
 const getHighestId = (idArray) => {
   return idArray.reduce((i, candidate) => (candidate > i ? candidate : i), 0);
+};
+
+const findMissingId = (idArray) => {
+  idArray.sort((a, b) => a - b);
+  for (let i = 0; i < idArray.length; i++) {
+    let candidate = idArray[i];
+    if (idArray[i + 1] != candidate + 1) return candidate + 1;
+  }
 };
