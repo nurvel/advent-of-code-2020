@@ -4,7 +4,13 @@ const { readData } = require("./utils");
 readData("07")
   .then((input) => parseRules(input))
   .then((bagRules) => getBGoldBagCount(bagRules))
-  .then((solution) => console.log("solution 1: ", solution)) // 222 ?
+  .then((solution) => console.log("solution 1: ", solution)) // 222
+  .catch((error) => console.log(error));
+
+readData("07")
+  .then((input) => parseRules(input))
+  .then((bagRules) => getBagCount("shiny gold bag", bagRules))
+  .then((solution) => console.log("solution 2: ", solution)) // 13264
   .catch((error) => console.log(error));
 
 const parseRules = (data) => {
@@ -55,4 +61,16 @@ const getBGoldBagCount = (bagRules) => {
     continueSearch = foundCount == lookingFor.length ? false : true;
   }
   return lookingFor.length - 1;
+};
+
+const getBagCount = (name, bagRules) => {
+  const bagRule = bagRules[name];
+  if (bagRule[0] == undefined) return 0;
+  let total = 0;
+  bagRule.forEach((b) => {
+    for (let i = 0; i < b.count; i++) {
+      total += getBagCount(b.bagType, bagRules) + 1;
+    }
+  });
+  return total;
 };
